@@ -206,12 +206,12 @@ class Chip8CPU(object):
 
         # Skip if the key specified in the source register is pressed
         if operation == 0x9E:
-            if keys_pressed[KEY_MAPPINGS[key_to_check]]:
+            if keys_pressed[KEY_MAPPINGS[key_to_check]] or key_to_check == self.pressed_key:
                 self.registers['pc'] += 2
 
         # Skip if the key specified in the source register is not pressed
         if operation == 0xA1:
-            if not keys_pressed[KEY_MAPPINGS[key_to_check]]:
+            if not keys_pressed[KEY_MAPPINGS[key_to_check]] and key_to_check != self.pressed_key:
                 self.registers['pc'] += 2
 
     def misc_routines(self):
