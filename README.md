@@ -118,12 +118,21 @@ customize the operation of the emulator. The most important one is the
 * The keys 0-9
 * The letters A-F
 
-The default configuration of the emulator will map the keypad numeric keys
-0-9 to the keys 0-9, and the keyboard keys a-f onto A-F. If you wish to 
-configure a different key-mapping, simply change the variable to reflect
-the mapping that you want. The [pygame.key](http://pygame.readthedocs.org/en/latest/ref/key.html)
-documentation contains a list of all the valid constants for keyboard
-key values.
+The Chip-8 keyboard is pictured below
+
+1 | 2 | 3 | C
+--| --| --|--
+4 | 5 | 6 | D
+7 | 8 | 9 | E
+A | 0 | B | F
+
+These keys are [mapped](https://github.com/NivenT/Chip8Python/blob/master/chip8/config.py#L23) onto the following
+
+1 | 2 | 3 | 4
+--| --| --|--
+Q | W | E | R
+A | S | D | F
+Z | X | C | V
 
 
 ## Further Documentation
