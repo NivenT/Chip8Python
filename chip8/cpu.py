@@ -168,6 +168,7 @@ class Chip8CPU(object):
             self.registers['pc'] += 2
         operation = (self.operand & 0xF000) >> 12
         self.operation_lookup[operation]()
+        self.pressed_keys = [] # Is this a good idea?
         return self.operand
 
     def execute_logical_instruction(self):
@@ -206,12 +207,12 @@ class Chip8CPU(object):
 
         # Skip if the key specified in the source register is pressed
         if operation == 0x9E:
-            if keys_pressed[KEY_MAPPINGS[key_to_check]] or key_to_check == self.pressed_key:
+            if keys_pressed[KEY_MAPPINGS[key_to_check]] or key_to_check in self.pressed_keys:
                 self.registers['pc'] += 2
 
         # Skip if the key specified in the source register is not pressed
         if operation == 0xA1:
-            if not keys_pressed[KEY_MAPPINGS[key_to_check]] and key_to_check != self.pressed_key:
+            if not keys_pressed[KEY_MAPPINGS[key_to_check]] and key_to_check not in self.pressed_keys:
                 self.registers['pc'] += 2
 
     def misc_routines(self):
