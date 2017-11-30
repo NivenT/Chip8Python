@@ -79,7 +79,7 @@ n
         self.surface = display.set_mode(
             ((self.width * self.scale_factor),
              (self.height * self.scale_factor)),
-            HWSURFACE | DOUBLEBUF,
+            0,
             SCREEN_DEPTH)
         display.set_caption('CHIP8 Emulator')
         self.clear_screen()
@@ -143,24 +143,18 @@ n
         x_scale = x_pos * self.scale_factor
         y_scale = y_pos * self.scale_factor
         '''
-        pixel = self.surfaceArray[x_pos][y_pos]
-        pixel_color = PIXEL_COLORS[pixel]
-        if pixel_color == PIXEL_COLORS[0]:
-            color = 0
-        else:
-            color = 1
-        return color
+        return self.surfaceArray[x_pos][y_pos]
 
     def clear_screen(self):
         """
         Turns off all the pixels on the screen (writes color 0 to all pixels).
         """
         self.surface.fill(PIXEL_COLORS[0])
-
+        self.clear_array()
+        
     def clear_array(self):
         self.surfaceArray = [[0 for i in range(self.height)] for j in range(self.width)]
 
-    
     @staticmethod
     def update():
         """

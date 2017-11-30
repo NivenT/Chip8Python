@@ -688,9 +688,9 @@ class Chip8CPU(object):
 
                 self.screen.draw_pixel(x_coord, y_coord, color)
 	#NEW STUFF HERE
-        if self.should_draw: self.screen.render_screen()
-	#END OF NEW STUFF
-        self.screen.update()
+        if self.should_draw:
+            self.screen.render_screen()
+            self.screen.update()
 
     def draw_extended(self, x_pos, y_pos, num_bytes):
         """
