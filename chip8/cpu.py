@@ -55,7 +55,7 @@ class Chip8CPU(object):
 
     ** VF is a special register - it is used to store the overflow bit
     """
-    def __init__(self, screen):
+    def __init__(self, screen, should_draw=False):
         """
         Initialize the Chip8 CPU. The only required parameter is a screen
         object that supports the draw_pixel function. For testing purposes,
@@ -63,6 +63,7 @@ class Chip8CPU(object):
 
         :param screen: the screen object to draw pixels on
         """
+        self.should_draw = should_draw
         # There are two timer registers, one for sound and one that is general
         # purpose known as the delay timer. The timers are loaded with a value
         # and then decremented 60 times per second.
@@ -687,7 +688,7 @@ class Chip8CPU(object):
 
                 self.screen.draw_pixel(x_coord, y_coord, color)
 	#NEW STUFF HERE
-	#self.screen.render_screen()
+        if self.should_draw: self.screen.render_screen()
 	#END OF NEW STUFF
         self.screen.update()
 
