@@ -686,7 +686,9 @@ class Chip8CPU(object):
                     color = 1
 
                 self.screen.draw_pixel(x_coord, y_coord, color)
-
+	#NEW STUFF HERE
+	self.screen.render_screen()
+	#END OF NEW STUFF
         self.screen.update()
 
     def draw_extended(self, x_pos, y_pos, num_bytes):

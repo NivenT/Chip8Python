@@ -64,14 +64,15 @@ class Chip8Screen(object):
         self.width = width
         self.scale_factor = scale_factor
         self.surface = None
+        self.surfaceArray = None
 
+    
     def init_display(self):
         """
         Attempts to initialize a screen with the specified height and width.
         The screen will by default be of depth SCREEN_DEPTH, and will be
         double-buffered in hardware (if possible).
         """
-        display.init()
         self.surface = display.set_mode(
             ((self.width * self.scale_factor),
              (self.height * self.scale_factor)),
@@ -79,8 +80,19 @@ class Chip8Screen(object):
             SCREEN_DEPTH)
         display.set_caption('CHIP8 Emulator')
         self.clear_screen()
+        self.clear_array()
         self.update()
 
+    def render_screen(self):
+         for x_pos in range(self.width):
+            for y_pos in range(self.height):
+                pixel_color = self.surfaceArray[x_pos][y_pos]
+                x_base = x_pos * self.scale_factor
+                y_base = y_pos * self.scale_factor
+                draw.rect(self.surface,
+                  PIXEL_COLORS[pixel_color],
+                  (x_base, y_base, self.scale_factor, self.scale_factor))
+   
     def draw_pixel(self, x_pos, y_pos, pixel_color):
         """
         Turn a pixel on or off at the specified location on the screen. Note
@@ -93,11 +105,14 @@ class Chip8Screen(object):
         :param y_pos: the y coordinate to place the pixel
         :param pixel_color: the color of the pixel to draw
         """
+        '''
         x_base = x_pos * self.scale_factor
         y_base = y_pos * self.scale_factor
         draw.rect(self.surface,
                   PIXEL_COLORS[pixel_color],
                   (x_base, y_base, self.scale_factor, self.scale_factor))
+        '''
+        self.surfaceArray[x_pos][y_pos] = pixel_color
 
     def get_pixel(self, x_pos, y_pos):
         """
@@ -108,9 +123,12 @@ class Chip8Screen(object):
         :param y_pos: the y coordinate to check
         :return: the color of the specified pixel (0 or 1)
         """
+        '''
         x_scale = x_pos * self.scale_factor
         y_scale = y_pos * self.scale_factor
-        pixel_color = self.surface.get_at((x_scale, y_scale))
+        '''
+        pixel = self.surfaceArray[x_pos][y_pos]
+        pixel_color = PIXEL_COLORS[pixel]
         if pixel_color == PIXEL_COLORS[0]:
             color = 0
         else:
@@ -123,6 +141,10 @@ class Chip8Screen(object):
         """
         self.surface.fill(PIXEL_COLORS[0])
 
+    def clear_array(self):
+        self.surfaceArray = [[0 for i in range(self.height)] for j in range(self.width)]
+
+    
     @staticmethod
     def update():
         """
