@@ -8,6 +8,7 @@ A simple Chip 8 emulator - see the README file for more information.
 
 import argparse
 import pygame
+import time
 
 from config import FONT_FILE, DELAY_INTERVAL
 from cpu import Chip8CPU
@@ -58,9 +59,15 @@ def main_loop(args):
     running = True
 
     while running:
-        pygame.time.wait(args.op_delay)
+        #pygame.time.wait(args.op_delay)
+        start = time.time()
         operand = cpu.execute_instruction()
+        cpu.screen.render_screen()
+        #pygame.time.wait(1)
+        durr = time.time() - start
 
+        pygame.display.set_caption('{} FPS'.format(int(1./durr)))
+        
         # Check for events
         for event in pygame.event.get():
             if event.type == TIMER:

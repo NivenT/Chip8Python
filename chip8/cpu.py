@@ -687,7 +687,7 @@ class Chip8CPU(object):
 
                 self.screen.draw_pixel(x_coord, y_coord, color)
 	#NEW STUFF HERE
-	self.screen.render_screen()
+	#self.screen.render_screen()
 	#END OF NEW STUFF
         self.screen.update()
 

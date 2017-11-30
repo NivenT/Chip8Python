@@ -6,6 +6,10 @@ A Chip 8 Screen - see the README file for more information.
 """
 # I M P O R T S ###############################################################
 
+import numpy as np
+import pygame as pg
+import struct
+
 from pygame import display, HWSURFACE, DOUBLEBUF, Color, draw
 
 # C O N S T A N T S ###########################################################
@@ -43,7 +47,6 @@ PIXEL_COLORS = {
 
 # C L A S S E S ###############################################################
 
-
 class Chip8Screen(object):
     """
     A class to emulate a Chip 8 Screen. The original Chip 8 screen was 64 x 32
@@ -55,7 +58,7 @@ class Chip8Screen(object):
         Initializes the main screen. The scale factor is used to modify
         the size of the main screen, since the original resolution of the
         Chip 8 was 64 x 32, which is quite small.
-
+n
         :param scale_factor: the scaling factor to apply to the screen
         :param height: the height of the screen
         :param width: the width of the screen
@@ -83,7 +86,14 @@ class Chip8Screen(object):
         self.clear_array()
         self.update()
 
+    @staticmethod
+    def to_bytestring(pixels):
+        def _to_bytestring(col):
+            return struct.pack('BBBB', *PIXEL_COLORS[col])
+        return ''.join(map(_to_bytestring, pixels.flatten()))
+
     def render_screen(self):
+         """
          for x_pos in range(self.width):
             for y_pos in range(self.height):
                 pixel_color = self.surfaceArray[x_pos][y_pos]
@@ -92,7 +102,13 @@ class Chip8Screen(object):
                 draw.rect(self.surface,
                   PIXEL_COLORS[pixel_color],
                   (x_base, y_base, self.scale_factor, self.scale_factor))
-   
+         """
+         pixels = np.array(self.surfaceArray)
+         data = Chip8Screen.to_bytestring(pixels.T)
+         texture = pg.image.frombuffer(data, (64, 32), 'RGBA')
+         texture = pg.transform.scale(texture, (self.width * self.scale_factor, self.height * self.scale_factor))
+         self.surface.blit(texture, texture.get_rect())
+         
     def draw_pixel(self, x_pos, y_pos, pixel_color):
         """
         Turn a pixel on or off at the specified location on the screen. Note
